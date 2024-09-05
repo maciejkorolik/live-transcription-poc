@@ -34,7 +34,7 @@ const Visualizer = ({ microphone }: { microphone: MediaRecorder }) => {
     if (!canvas) return;
 
     canvas.style.width = "100%";
-    canvas.style.height = "100%";
+    canvas.style.height = "50%";
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
@@ -45,27 +45,51 @@ const Visualizer = ({ microphone }: { microphone: MediaRecorder }) => {
     requestAnimationFrame(draw);
 
     analyser.getByteFrequencyData(dataArray);
+    const halfLength = Math.floor(dataArray.length / 2);
+    const firstHalf = dataArray.slice(0, halfLength);
+    const reversedHalf = firstHalf.slice(0, -1).reverse();
+    const modifiedDataArray = new Uint8Array([...firstHalf, ...reversedHalf]);
 
     if (!context) return;
 
     context.clearRect(0, 0, width, height);
 
-    const barWidth = 10;
-    let x = 0;
-    const startColor = [19, 239, 147];
-    const endColor = [20, 154, 251];
+    const radius = Math.min(width, height) / 2;
 
-    for (const value of dataArray) {
-      const barHeight = (value / 255) * height * 2;
+    const numBands = 20;
+    const bandWidth = modifiedDataArray.length / numBands;
 
-      const interpolationFactor = value / 255;
+    context.beginPath();
+    context.moveTo(width / 2, height / 2 - 100);
 
-      const color = interpolateColor(startColor, endColor, interpolationFactor);
+    const points = [];
+    for (let i = 0; i < numBands; i++) {
+      const startIndex = Math.floor(i * bandWidth);
+      const endIndex = Math.floor((i + 1) * bandWidth);
+      const bandData = modifiedDataArray.slice(startIndex, endIndex);
+      const average = bandData.reduce((a, b) => a + b, 0) / bandData.length;
+      const bandRadius = (average / 255) * 50 + 100;
 
-      context.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.1)`;
-      context.fillRect(x, height - barHeight, barWidth, barHeight);
-      x += barWidth;
+      const angle = (i / numBands) * 2 * Math.PI;
+      const x = width / 2 + Math.cos(angle) * bandRadius;
+      const y = height / 2 + Math.sin(angle) * bandRadius;
+
+      points.push({ x, y });
     }
+
+    points.forEach((point, index) => {
+      if (index === 0) {
+        context.moveTo(point.x, point.y);
+      } else {
+        context.lineTo(point.x, point.y);
+      }
+    });
+
+    context.closePath();
+    context.filter = "blur(20px)";
+    context.fillStyle = `rgba(0,0,0,0.9)`;
+    context.fill();
+    context.filter = "none";
   };
 
   return <canvas ref={canvasRef} width={window.innerWidth}></canvas>;

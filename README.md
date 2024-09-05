@@ -1,75 +1,74 @@
-# Live Transcription Next.js Starter
+# Live transcription PoC
 
-[![Discord](https://dcbadge.vercel.app/api/server/xWRaCDBtW4?style=flat)](https://discord.gg/xWRaCDBtW4)
+This is a Next.js application that provides live transcription and translation services using Deepgram and Groq models. The app captures audio input from the user's microphone, transcribes it in real-time, and transforms the transcribed text based on a custom prompt. The goal of this app is to experiment with Deepgram transcriptions and evaluate speed of Groq API.
+The app is heavily based on the [Next.js Live Transcription App](https://github.com/deepgram-starters/nextjs-live-transcription) by [Deepgram DX Team](https://developers.deepgram.com/).
 
-The purpose of this demo is to showcase how you can build a NextJS speech to text app using [Deepgram](https://deepgram.com/).
+## Features
 
-## Issue Reporting
+- **Live Transcription**: Uses Deepgram's API to transcribe audio in real-time.
+- **Custom Prompts**: Allows users to input custom prompts for text processing.
+- **Model Selection**: Users can select different models for both transcription and text generation.
+- **Response Time**: Displays the response time for text generation.
 
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker.
+## Getting Started
 
-Check out our [KNOWN ISSUES](./KNOWN_ISSUES.md) before reporting.
+### Prerequisites
 
-## Demo features
+- Node.js
+- npm or yarn
 
-- Capture streaming audio using [Deepgram Streaming Speech to Text](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
+### Installation
 
-## What is Deepgram?
+1. Install dependencies:
 
-[Deepgram](https://deepgram.com/) is a foundational AI company providing speech-to-text and language understanding capabilities to make data readable and actionable by human or machines.
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
-## Sign-up to Deepgram
+2. Set up environment variables:
+   Create a `.env` file in the root directory and add your API keys:
+   ```env
+   DEEPGRAM_API_KEY=your_deepgram_api_key
+   GROQ_API_KEY=your_groq_api_key
+   DEEPGRAM_ENV=development
+   ```
 
-Want to start building using this project? [Sign-up now for Deepgram and create an API key](https://console.deepgram.com/signup?jump=keys).
+### Running the App
 
-## Quickstart
+1. Start the development server:
 
-### Manual
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-Follow these steps to get started with this starter application.
+2. Open your browser and navigate to `http://localhost:3000`.
 
-#### Clone the repository
+## Usage
 
-Go to GitHub and [clone the repository](https://github.com/deepgram-starters/nextjs-live-transcription).
+- **Microphone Setup**: Ensure your microphone is set up and allowed in the browser.
+- **Transcription**: Start speaking, and the app will transcribe your speech in real-time.
+- **Custom Prompt**: Enter a custom prompt to process the transcribed text.
+- **Model Selection**: Choose the desired models for transcription and text generation from the dropdown menus.
 
-#### Install dependencies
+## Project Structure
 
-Install the project dependencies.
+- `app/api/authenticate/route.ts`: Handles authentication and API key management with Deepgram.
+- `app/api/completion/route.ts`: Manages text generation using Groq models.
+- `app/components/App.tsx`: Main React component for the application.
+- `package.json`: Lists project dependencies and scripts.
 
-```bash
-npm install
-```
+## Dependencies
 
-#### Edit the config file
+- `@deepgram/sdk`: Deepgram SDK for transcription.
+- `@ai-sdk/openai`: SDK for interacting with Groq models.
+- `next`: Next.js framework.
+- `react`: React library.
+- `tailwindcss`: Utility-first CSS framework.
 
-Copy the code from `sample.env.local` and create a new file called `.env.local`.
+## Contributing
 
-```bash
-DEEPGRAM_API_KEY=YOUR-DG-API-KEY
-```
-
-For `DEEPGRAM_API_KEY` paste in the key you generated in the [Deepgram console](https://console.deepgram.com/).
-
-#### Run the application
-
-Once running, you can [access the application in your browser](http://localhost:3000).
-
-```bash
-npm run dev
-```
-
-## Getting Help
-
-We love to hear from you so if you have questions, comments or find a bug in the project, let us know! You can either:
-
-- [Open an issue in this repository](https://github.com/deepgram-starters/nextjs-live-transcription/issues)
-- [Join the Deepgram Github Discussions Community](https://github.com/orgs/deepgram/discussions)
-- [Join the Deepgram Discord Community](https://discord.gg/xWRaCDBtW4)
-
-## Author
-
-[Deepgram](https://deepgram.com)
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](./LICENSE) file for more info.
+Contributions are welcome! Please open an issue or submit a pull request for any changes.
